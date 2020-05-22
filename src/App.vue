@@ -1,43 +1,56 @@
 <template>
     <div id="app">
-        <div class="flex justify-center bg-gray-200 pb-5 pt-4">
-            <h1 class="text-green text-6xl uppercase font-black">#HasilHard</h1>
-        </div>
-
-         <div class="flex justify-center bg-gray-200 pb-10 pt-2">
-            <h1 v-if="is_identityNotEmpty" class="text-2xl">HOW WILL YOU SPEND THE MONEY OF <strong class="uppercase">{{ selectedIdentity.name }}</strong>?</h1>
-            <h1 v-else class="text-2xl">CHOOSE YOUR IDOL</h1>
-        </div>
-
-        <div v-if="is_identityNotEmpty" class="flex flex-wrap justify-center bg-gray-200 pb-10">
-            <div class="w-6/12 sm:w-4/12 px-4">
-                <h1 class="md:text-4xl xl:text-black font-extrabold bg-green-400 mb-2">{{ selectedIdentity.name }}</h1>
-                <img :src="selectedIdentity.img_link" alt="..." class="shadow-lg rounded-full max-w-full h-auto align-middle border-none" />
-                <h1 class="md:text-4xl xl:text-black font-extrabold bg-green-400 mt-2">{{ formatMoney(showBalance) }} {{ showBalance>0 ? 'left' : '' }}</h1>
+        <div class="flex items-center bg-gray-200">
+            <div class="flex justify-center m-auto bg-gray-200 pb-5 pt-4">
+                <h1 class="text-green text-5xl uppercase font-black">#HasilHard</h1>
             </div>
         </div>
+        <div class="flex items-center bg-gray-200">
+             <div class="flex justify-center m-auto bg-gray-200 pb-10 pt-2 px-10">
+                <h1 v-if="is_identityNotEmpty" class="text-2xl">HOW WILL YOU SPEND THE MONEY OF <strong class="uppercase">{{ selectedIdentity.name }}</strong>?</h1>
+                <h1 v-else class="text-2xl">CHOOSE YOUR IDOL</h1>
+            </div>
+        </div>
+        <div class="flex bg-gray-200">
 
-        <your-identity v-else :identity_data="identities" v-on:getIdentity="getSelectedIdentity"/>
+            <div v-if="is_identityNotEmpty" class="flex flex-wrap justify-center m-auto bg-gray-200 pb-10">
+                <div class="px-4">
+                    <h1 class="md:text-4xl xl:text-black font-extrabold bg-green-400 mb-2">{{ selectedIdentity.name }}</h1>
+                    <img :src="selectedIdentity.img_link" alt="..." class="shadow-lg rounded-full max-w-xs m-auto h-auto align-middle border-none" />
+                    <h1 class="md:text-4xl xl:text-black font-extrabold bg-green-400 mt-2 px-4">{{ formatMoney(showBalance) }} {{ showBalance>0 ? 'left' : '' }}</h1>
+                </div>
+            </div>
 
-        <h1 v-if="seledtedItems.lenght" class="md:text-2xl font-bold bg-gray-200 pl-10 py-5"> Your purchases</h1>
+            <your-identity v-else :identity_data="identities" v-on:getIdentity="getSelectedIdentity"/>
+        </div>
+
+        <div class="flex flex-wrap bg-gray-200">
+            <h1 v-if="seledtedItems.length" class="text-3xl font-bold bg-gray-200 py-5 m-auto"> Your purchases</h1>
+        </div>
+        <div class="flex flex-wrap bg-gray-200">    
+            <!-- <div class="grid grid-cols-6 gap-4 justify-center bg-gray-200 px-10"> -->
+            <div class="grid xl:grid-cols-5 bg-gray-200 gap-2 pt-5 py-10 m-auto">
+                <div v-for="(item,key) in seledtedItems" :key=key class="bg-white p-4 clear-both" v-show="item.qnty>0">
+                    <img :src="item.img_link" alt="..." class="m-auto w-20 object-cover h-16 align-middle border-none mr-2 float-left" />
+                    <div class="float-right">
+                        <span class="text-xl font-bold pt-2 pb-0">{{ item.name }}</span> 
+                        <br /> {{ formatMoney(item.value) }} x {{ item.qnty }}
+                        <br />{{ formatMoney(item.value*item.qnty) }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
         
-        <div class="grid grid-cols-6 gap-4 justify-center bg-gray-200 px-10">
-            <div v-for="(item,key) in seledtedItems" :key=key class="bg-white p-4" v-show="item.qnty>0">
-                <img :src="item.img_link" alt="..." class="m-auto w-20 h-auto align-middle border-none" />
-                <span class="text-xl font-bold pt-2 pb-0">{{ item.name }}</span> 
-                    <br /> {{ formatMoney(item.value) }} x {{ item.qnty }}
-                    <br />{{ formatMoney(item.value*item.qnty) }}
-            </div>
-        </div>
-
         <hr class="border-2" />
 
-        <div v-if="is_identityNotEmpty" class="grid xl:grid-cols-4 bg-gray-200 gap-4 pt-5 px-10 py-10">
-            <item  v-for="(item, key) in list_items" :key=key :item="item" v-on:handleItemSelected="calculate_items"></item>
+        <div class="flex flex-wrap bg-gray-200 px-10">
+            
+            <div v-if="is_identityNotEmpty" class="grid xl:grid-cols-6 bg-gray-200 gap-4 pt-5 py-10 m-auto">
+                <item  v-for="(item, key) in list_items" :key=key :item="item" v-on:handleItemSelected="calculate_items"></item>
+            </div>
+
         </div>
-
-        <!-- <h4>You have selected {{ selectedIdentity.name }} with {{ selectedIdentity.networth }}</h4> -->
-
     </div>
 </template>
 
@@ -136,6 +149,16 @@ export default {
                   name: 'F16 Figther Jet',
                   value: 15000000,
                   img_link: 'https://neal.fun/spend/minified/f16.jpg'
+                },
+                { id:16,
+                  name: 'NBA Team',
+                  value: 13000000,
+                  img_link: 'https://neal.fun/spend/minified/nbateam.jpg'
+                },
+                { id:17,
+                  name: 'Pandesal',
+                  value: 0.25,
+                  img_link: 'https://panlasangpinoy.com/wp-content/uploads/2014/11/Pandesal_.jpg'
                 },
             ],
 

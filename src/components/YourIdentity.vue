@@ -1,9 +1,12 @@
 <template>
-    <div class="flex items-center bg-gray-200">
-        <div v-for="identity in identities" :key="identity.name" class="flex-1 bg-gray-400 px-4 py-2 m-2 clearfix:after customDiv cursor-pointer" @click="setIdentity(identity)">
-            <img :src="identity.img_link" alt="..." class="sm:float-left shadow-lg rounded-full max-w-full h-auto align-middle border-none cursor-pointer" />
-            <h1 class="md:text-2xl xl:text-black font-extrabold cursor-pointer">{{ formatMoney(identity.networth) }}</h1>
+    <div class="flex flex-wrap justify-center bg-gray-200">
+        <div v-for="identity in identities" 
+             :key="identity.name" 
+             class="w-6/12 sm:w-2/12 px-4"
+             @click="setIdentity(identity)">
+            <img :src="identity.img_link" alt="..." class="sm:float-left shadow-lg rounded-full max-w-full h-auto align-middle border-none cursor-pointer mb-5" />
             <h1 class="md:text-2xl xl:text-black font-extrabold cursor-pointer">{{ identity.name }}</h1>
+            <h1 class="md:text-xl xl:text-black font-extrabold cursor-pointer">{{ formatMoney(identity.networth) }} networth</h1>
         </div>
     </div>
 </template>
